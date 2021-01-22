@@ -1,31 +1,39 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const exphbs = require('express-handlebars');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const mysql = require('mysql');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users'); 
+const adminRouter = require('./routes/admin'); 
+const bodyParser = require('body-parser');
 
-var app = express();
+const app = express();
 
+// Configuracion
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.engine('.hbs', exphbs({
+  defaultLayout: 'main',
+  layoutsDir: path.join(app.get('views'), 'layouts'),
+  partialsDir: path.join(app.get('views'), 'partials'),
+  extname: '.hbs',
+  helpers: require('./lib/handlebars')
+}))
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
+
+// Declaracion de variables
+app.set('port', process.env.PORT || 4000);
+
+app.use(morgan('dev'));
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -37,5 +45,31 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// MIDDLEWARES
+
+
+// PUBLIC
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ROUTES
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+
+
+// STARTING SERVER
+app.listen(app.get('port'), () => {
+  console.log('Server on port', app.get('port'));
+});
+
+
+
 
 module.exports = app;
