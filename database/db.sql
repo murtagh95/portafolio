@@ -11,16 +11,18 @@ ALTER TABLE proyectos
 ADD imagen VARCHAR(50);
 
 
-INSERT INTO proyectos(nombre, descripcion, link_github, link_proyecto) VALUE("Links Favoritos", "Proyecto realizado con framework express, donde utilizo el motor de plantillas hbs, un CRUD en una base de datos MySql y con registro de usuarios. La aplicación permite guardar tus links agregando una descripción, los mismos se pueden modificar y borrar si lo desea.", "https://github.com/murtagh95/proyecto_liks", 'https://proyecto-links.herokuapp.com/');
+INSERT INTO proyectos(nombre, descripcion, link_github, link_proyecto, imagen) VALUE(
+    "Links Favoritos", "Proyecto realizado con framework express, donde utilizo el motor de plantillas hbs, un CRUD en una base de datos MySql y con registro de usuarios. La aplicación permite guardar tus links agregando una descripción, los mismos se pueden modificar y borrar si lo desea.", 
+    "https://github.com/murtagh95/proyecto_liks", 
+    'https://proyecto-links.herokuapp.com/',
+    'links.png'
+);
 
-UPDATE proyectos 
-SET imagen = 'links.png'
-WHERE id = 1;
 
 INSERT INTO proyectos VALUE
 (NULL,
 "Guia Hoteles",
-"Proyecto realizado con el curso de <a href='https://www.coursera.org/account/accomplishments/certificate/QEQ2QMGDVDEX'> bootstrap </a>en la plataforma de coursera donde se ven temas como ventanas modal, tooltips,breadcrumb, carousel, collapse, popovers, entre otros.",
+"Proyecto realizado con el curso de  bootstrap en la plataforma de coursera donde se ven temas como ventanas modal, tooltips,breadcrumb, carousel, collapse, popovers, entre otros.",
 "https://github.com/murtagh95/guia-hoteles",
 "https://guia-hoteles.netlify.app/",
 "guia-hoteles.png");
@@ -28,7 +30,7 @@ INSERT INTO proyectos VALUE
 INSERT INTO proyectos VALUE
 (NULL,
 "Club Pacifico",
-"Proyecto creo con tecnologias basicas de HTML, CSS, JS Y Bootstrap. Creado para ser entregado como final del curso brindado por <a href='https://civet.com.ar/' target='_blank'>CIVET </a> sobre HTTML y CSS",
+"Proyecto creo con tecnologias basicas de HTML, CSS, JS Y Bootstrap. Creado para ser entregado como final del curso brindado por CIVET sobre HTTML y CSS",
 "https://github.com/murtagh95/Club_pacifico",
 "https://club-pacifico.netlify.app/",
 "club-pacifico.png");
