@@ -1,3 +1,4 @@
+require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const exphbs = require('express-handlebars');
@@ -5,6 +6,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mysql = require('mysql');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users'); 
@@ -29,11 +32,19 @@ app.set('view engine', 'hbs');
 // Declaracion de variables
 app.set('port', process.env.PORT || 4000);
 
+// MIDDLEWARES
+app.use(session({
+  secret: 'SuperSecretoDePortafolio',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(flash())
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -46,8 +57,12 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// MIDDLEWARES
+// Variables globales
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
 
+  next();
+});
 
 // PUBLIC
 app.use(express.static(path.join(__dirname, 'public')));

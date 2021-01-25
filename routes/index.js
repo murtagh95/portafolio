@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database')
+const pool = require('../config/database');
+const transporter = require('../config/mailer');
+// const controller = require('../controllers/index');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -16,6 +18,46 @@ router.get('/', function(req, res, next) {
     }
   })
 
+});
+
+router.post('/', (req, res) => {
+  const {name, email, phone, message} = req.body;
+
+  
+  console.log(req.body)
+
+ 
+  
+  const contentHTML = `
+    <h1>Información de contacto</h1>
+    <ul>
+      <li> Nombre : ${name} </li>
+      <li> Email : ${email} </li>
+      <li> Telefono : ${phone} </li>
+      <li> Mensaje : ${message} </li>
+    </ul>
+  ` 
+
+  const mailOption = {
+    from: "Portafolio",
+    to: 'nec.catalano@gmail.com',
+    subject: "Información para contacto desde portafolio",
+    html: contentHTML
+  }
+
+  transporter.sendMail(mailOption, (error, info) => {
+    if(error) {
+      console.log('Error al enviar mail: ' , error.message);
+      req.flash("success", `Error al enviar mensaje: ${error.message}`);
+    }
+    else{
+      console.log('Email enviado');
+      req.flash('success', 'Mensaje enviado con exito.');
+      res.redirect('/')
+    }
+  });
+
+  
 });
 
 module.exports = router;
