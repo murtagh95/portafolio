@@ -1937,6 +1937,11 @@ pre code {
   .table-responsive-md > .table-bordered {
     border: 0;
   }
+  
+  h1, .h1 {
+    font-size: 4rem;
+  }
+  
 }
 @media (max-width: 991.98px) {
   .table-responsive-lg {
