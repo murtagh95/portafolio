@@ -20,13 +20,16 @@ router.get('/', function(req, res, next) {
 
 });
 
+// GET curriculum vitae
+router.get('/cv', function(req, res, next) {
+  
+  res.render('cv', {varAux: true});
+
+});
+
+// POST HOME
 router.post('/', (req, res) => {
   const {name, email, phone, message} = req.body;
-
-  
-  console.log(req.body)
-
- 
   
   const contentHTML = `
     <h1>Información de contacto</h1>
@@ -48,7 +51,7 @@ router.post('/', (req, res) => {
   transporter.sendMail(mailOption, (error, info) => {
     if(error) {
       console.log('Error al enviar mail: ' , error.message);
-      req.flash("success", `Error al enviar mensaje: ${error.message}`);
+      req.flash("error", `Error al enviar mensaje: ${error.message}`);
     }
     else{
       console.log('Email enviado');

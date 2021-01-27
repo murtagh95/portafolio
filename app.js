@@ -2,15 +2,14 @@ require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mysql = require('mysql');
 const flash = require('connect-flash');
-const session = require('express-session');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users'); 
+const indexRouter = require('./routes/index'); 
 const adminRouter = require('./routes/admin'); 
 const bodyParser = require('body-parser');
 
@@ -41,8 +40,8 @@ app.use(session({
 app.use(flash())
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 
@@ -60,7 +59,7 @@ app.use(function(err, req, res, next) {
 // Variables globales
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
-
+  res.locals.error = req.flash('error')
   next();
 });
 
@@ -69,7 +68,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
