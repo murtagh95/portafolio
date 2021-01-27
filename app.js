@@ -1,11 +1,14 @@
-require('dotenv').config()
+if(process.env.NODE_ENV != 'production'){
+  require('dotenv').config()
+  const morgan = require('morgan');
+  app.use(morgan('dev'));
+}
 const createError = require('http-errors');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
 const mysql = require('mysql');
 const flash = require('connect-flash');
 
@@ -38,7 +41,6 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash())
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
