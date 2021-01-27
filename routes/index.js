@@ -5,8 +5,9 @@ const transporter = require('../config/mailer');
 // const controller = require('../controllers/index');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',  (req, res) => {
   const sql = 'SELECT * FROM proyectos';
+
   pool.query(sql, (err, results) => {
     if(err) throw err;
 
@@ -16,12 +17,11 @@ router.get('/', function(req, res, next) {
     else{
       console.log('No se encontro ningun proyecto')
     }
-  })
-
+  });
 });
 
 // GET curriculum vitae
-router.get('/cv', function(req, res, next) {
+router.get('/cv', function(req, res) {
   
   res.render('cv', {varAux: true});
 
@@ -51,7 +51,8 @@ router.post('/', (req, res) => {
   transporter.sendMail(mailOption, (error, info) => {
     if(error) {
       console.log('Error al enviar mail: ' , error.message);
-      req.flash("error", `Error al enviar mensaje: ${error.message}`);
+      req.flash("error", `Error al enviar mensaje.`);
+      res.redirect('/')
     }
     else{
       console.log('Email enviado');

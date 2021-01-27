@@ -1,10 +1,13 @@
+const express = require('express');
+const app = express();
+
 if(process.env.NODE_ENV != 'production'){
   require('dotenv').config()
   const morgan = require('morgan');
   app.use(morgan('dev'));
-}
+}  // Verifico si esta en un ambiente de producción
+
 const createError = require('http-errors');
-const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const path = require('path');
@@ -16,7 +19,7 @@ const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin'); 
 const bodyParser = require('body-parser');
 
-const app = express();
+
 
 // Configuracion
 // view engine setup
